@@ -7,6 +7,7 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  FormattedCustomersTable,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -175,13 +176,40 @@ export async function fetchInvoiceById(id: string) {
 }
 
 export async function fetchCustomers() {
+  noStore();
   try {
     const data = await sql<CustomerField>`
       SELECT
         id,
-        name
+        name,
       FROM customers
       ORDER BY name ASC
+    `;
+
+    const customers = data.rows;
+    return customers;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all customers.');
+  }
+}
+
+export async function fetchCustomersPage() {
+  noStore();
+  try {
+    const data = await sql<FormattedCustomersTable>`
+    SELECT
+      customers.id,
+      customers.name,
+      customers.email,
+      customers.image_url,
+      COUNT(invoices.status) as total_invoices,
+      COUNT(case when invoices.status = 'pending' then 1 else null end) as total_pending,
+      COUNT(case when invoices.status = 'paid' then 1 else null end) as total_paid
+    FROM customers
+    INNER JOIN invoices ON invoices.customer_id = customers.id
+    GROUP BY customers.id
+    ORDER BY customers.name ASC
     `;
 
     const customers = data.rows;
