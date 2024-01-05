@@ -181,7 +181,7 @@ export async function fetchCustomers() {
     const data = await sql<CustomerField>`
       SELECT
         id,
-        name,
+        name
       FROM customers
       ORDER BY name ASC
     `;
@@ -194,7 +194,7 @@ export async function fetchCustomers() {
   }
 }
 
-export async function fetchCustomersPage() {
+export async function fetchCustomersPage(query: string) {
   noStore();
   try {
     const data = await sql<FormattedCustomersTable>`
@@ -208,6 +208,9 @@ export async function fetchCustomersPage() {
       COUNT(case when invoices.status = 'paid' then 1 else null end) as total_paid
     FROM customers
     INNER JOIN invoices ON invoices.customer_id = customers.id
+    WHERE
+      customers.name ILIKE ${`%${query}%`} OR
+      customers.email ILIKE ${`%${query}%`}
     GROUP BY customers.id
     ORDER BY customers.name ASC
     `;
