@@ -1,8 +1,8 @@
 import {
-  BanknotesIcon,
-  ClockIcon,
-  UserGroupIcon,
   InboxIcon,
+  ClockIcon,
+  BanknotesIcon,
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
 import { fetchCardData } from '@/app/lib/data';

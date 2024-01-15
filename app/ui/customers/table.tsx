@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import { lusitana } from '@/app/ui/fonts';
-import Search from '@/app/ui/search';
+
 import { fetchCustomersPage } from '@/app/lib/data';
 
 export default async function CustomersTable({ query }: { query: string }) {

@@ -1,9 +1,10 @@
+import { Suspense } from 'react';
+import { Metadata } from 'next';
+
+import Search from '@/app/ui/search';
+import { lusitana } from '@/app/ui/fonts';
 import CustomersTable from '@/app/ui/customers/table';
 import { TableRowSkeleton } from '@/app/ui/skeletons';
-import { Suspense } from 'react';
-import { lusitana } from '@/app/ui/fonts';
-import Search from '@/app/ui/search';
-import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Customers',
